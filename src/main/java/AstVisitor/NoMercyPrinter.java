@@ -22,18 +22,19 @@ public class NoMercyPrinter extends AstVisitor {
     void visit(ProgramNode node) throws Exception {
         // primitive type
         for (AstNode item: node.variableDefinitionList) {
-            if (((DefinitionExpressionNode)item).exprType instanceof PrimitiveTypeNode) {
+            if (!(((DefinitionExpressionNode)item).variableType instanceof ClassTypeNode)) {
                 os.println(";");
                 visit(item);
             }
         }
+
         for (AstNode item : node.classDefinitionList) {
             visit(item);
         }
 
         // non primitive type after class definition
         for (AstNode item: node.variableDefinitionList) {
-            if (!(((DefinitionExpressionNode)item).exprType instanceof PrimitiveTypeNode)) {
+            if (((DefinitionExpressionNode)item).variableType instanceof ClassTypeNode) {
                 os.println(";");
                 visit(item);
             }
