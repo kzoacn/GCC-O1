@@ -55,3 +55,24 @@ inline string* __lib_getString() {
     scanf("%s", buf);
     return new string(buf);
 }
+struct array__;
+struct string;
+int main();
+void print(string* LL_str);
+void println(string* LL_str);
+string* getString();
+int getInt();
+string* toString(int LL_i);
+struct array__ {
+int size() {
+}
+};
+int main() {
+string* LL_s = getString();
+println(LL_s);
+}
+void print(string* str) { __lib_print(str); }
+void println(string* str) { __lib_println(str); }
+string* getString() { return __lib_getString(); }
+int getInt() { return __lib_getInt(); }
+string* toString(int i) { return __lib_toString(i); }

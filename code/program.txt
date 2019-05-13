@@ -1,4 +1,4 @@
-int main() {
-    println("too young too simple.");
-    return 0;
+int main(){
+  string s=getString();
+  println(s);
 }

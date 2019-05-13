@@ -18,11 +18,22 @@ public class NoMercyPrinter extends AstVisitor {
         this.os = os;
     }
 
+    private boolean hoist(DefinitionExpressionNode item) {
+        if (item.variableType instanceof ClassTypeNode) return false;
+        if (item.variableType instanceof PrimitiveTypeNode) return true;
+        if (item.variableType instanceof ArrayTypeNode) {
+            TypeNode typeNode = ((ArrayTypeNode) item.variableType).innerTypeNode;
+            for (; typeNode instanceof ArrayTypeNode; typeNode = ((ArrayTypeNode) typeNode).innerTypeNode);
+            return !(typeNode instanceof ClassTypeNode);
+        }
+        return false;
+    }
+
     @Override
     void visit(ProgramNode node) throws Exception {
         // primitive type
         for (AstNode item: node.variableDefinitionList) {
-            if (!(((DefinitionExpressionNode)item).variableType instanceof ClassTypeNode)) {
+            if (hoist((DefinitionExpressionNode)item)) {
                 os.println(";");
                 visit(item);
             }
@@ -34,7 +45,7 @@ public class NoMercyPrinter extends AstVisitor {
 
         // non primitive type after class definition
         for (AstNode item: node.variableDefinitionList) {
-            if (((DefinitionExpressionNode)item).variableType instanceof ClassTypeNode) {
+            if (!hoist((DefinitionExpressionNode)item)) {
                 os.println(";");
                 visit(item);
             }
